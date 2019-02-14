@@ -3,25 +3,32 @@ import RPi.GPIO as GPIO
 import time
 
 #Pin numbers
-led1 = 7
-led2 = 11
-led3 = 13
+led0 = 7
+led1 = 11
+led2 = 13
 
-#set GPIO numbering mode and define input pin
+
+# Create a list of leds
+leds = [led0,led1,led2]
+
+# Set GPIO numbering mode and define input pin
 GPIO.setmode(GPIO.BOARD)
-#OUT
-for ledX in [led1, led2, led3]:
-    	GPIO.setup(ledX,GPIO.OUT)   # Set led's mode is output
-    	GPIO.output(ledX, GPIO.LOW) # Set led to low(0V) for clean start
+
+
+# For each LED in our list of LEDs
+for ledX in leds:
+	GPIO.setup(ledX, GPIO.OUT)   # Set led's mode is output
+	GPIO.output(ledX, GPIO.LOW) # Set led to low(0V) for clean start
 
 try:
-    	while True:
-    			for ledX in [led1, led2, led3]:
-    					GPIO.output(ledX, GPIO.HIGH) # Set led to high(3V)
-    					time.sleep(0.2)
-    			for ledX in [led1, led2, led3]:
-    					GPIO.output(ledX, GPIO.LOW) # Set led to high(3V)
-    					time.sleep(0.2)
-
+    # Loop forever
+    while True:
+		for ledX in leds:
+			GPIO.output(ledX, GPIO.HIGH) # Set led to high(3V)
+			time.sleep(0.2)
+		for ledX in leds:
+			GPIO.output(ledX, GPIO.LOW) # Set led to high(3V)
+			time.sleep(0.2)
+# Exit on control+c
 except KeyboardInterrupt:
-        GPIO.cleanup()
+    GPIO.cleanup()

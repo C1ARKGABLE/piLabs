@@ -1,52 +1,75 @@
 #import GPIO library
-import RPi.GPIO as GPIO
+#import RPi.GPIO as GPIO
 import time
 
 #Pin numbers
-led1 = 7
-led2 = 11
-led3 = 13
+led0 = 7
+led1 = 11
+led2 = 13
+
+# Create a list of leds
+leds = [led0, led1, led2]
+# Create a list to keep track of PWM objects
+pwmObjs = []
+
 
 def setup():
-        global p, q, r
 
-        #set GPIO numbering mode
-        GPIO.setmode(GPIO.BOARD)
+    #set GPIO numbering mode
+    GPIO.setmode(GPIO.BOARD)
 
-        #OUT setup
-        for ledX in [led1, led2, led3]:
-                GPIO.setup(ledX,GPIO.OUT)   # Set led's mode is output
-                GPIO.output(ledX, GPIO.LOW) # Set led to low(0V)
-        p = GPIO.PWM(led1, 50)  # set Frequece (1000 = 1KHz)              
-        q = GPIO.PWM(led2, 50)     
-        r = GPIO.PWM(led3, 50)     
-        for x in [p, q, r]:
-                x.start(0) # Duty Cycle = 0
+    #OUT setup
+    for ledX in leds:
+
+        # Set LEDs mode to output
+        GPIO.setup(ledX,GPIO.OUT)
+
+        # Set led to low(0V)
+        GPIO.output(ledX, GPIO.LOW)
+
+        # Set Frequency (1000 = 1KHz)
+        x = GPIO.PWM(ledX, 50)
+
+        # Duty Cycle = 0
+        x.start(0)
+
+        # Add x to pwmObjs
+        pwmObjs.append(x)
+
 
 def loop():
-        while True:
-                for dc in range(0, 101, 20): # Increase duty cycle: 0~100
-                        for x in [p, q, r]:
-                                x.ChangeDutyCycle(dc)   # Change duty cycle
-                                time.sleep(0.1)
-                time.sleep(0.5)  
-                for dc in range(100, -1, -10): # Decrease duty cycle: 100~0
-                        for x in [p, q, r]:
-                                x.ChangeDutyCycle(dc)   # Change duty cycle
-                                time.sleep(0.1)
-                time.sleep(0.5)
+    while True:
+        # Increase duty cycle: 0 -> 100
+        for dutyCycle in range(0, 101, 20):
+            for x in pwmObjs:
+                x.ChangeDutyCycle(dutyCycle)
+                time.sleep(0.1)
+            time.sleep(0.5)
+
+        # Decrease duty cycle: 100 -> 0
+        for dutyCycle in range(100, -1, -10):
+            for x in pwmObjs:
+                x.ChangeDutyCycle(dutyCycle)
+                time.sleep(0.1)
+            time.sleep(0.5)
 
 def destroy():
-        for x in [p, q, r]:
-                x.stop()
-        for ledX in [led1, led2, led3]:
-                GPIO.output(ledX, GPIO.LOW) # turn off all leds
-        GPIO.cleanup()
+    for x in pwmObjs:
+        # Stop all the PWM objects
+        x.stop()
 
-if __name__ == '__main__': # Program start from here
+    for ledX in leds:
+        # Turn off all leds
+        GPIO.output(ledX, GPIO.LOW)
+
+    GPIO.cleanup()
+
+# Program start from here
+
+if __name__ == '__main__':
         setup()
         try:
                 loop()
-        # When 'Ctrl+C' is pressed, the child program destroy() will be  executed.
+        # When ctrl+c is pressed, destroy() is called to cleanup
         except KeyboardInterrupt:
                 destroy()
