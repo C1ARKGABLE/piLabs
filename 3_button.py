@@ -17,16 +17,19 @@ GPIO.setmode(GPIO.BOARD)
 # Setup input
 GPIO.setup(button0, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
-#OUT
+# For each LED in our list of LEDs
 for ledX in leds:
-    GPIO.setup(ledX,GPIO.OUT)   # Set led's mode is output
-    GPIO.output(ledX, GPIO.LOW) # Set led to low(0V) for clean start
+		# Set LEDs mode to output
+		GPIO.setup(ledX,GPIO.OUT)
+		# Set led to low(0V) for clean start
+		GPIO.output(ledX, GPIO.LOW)
 
 try:
-    while True:
-        for ledX in leds:
-        GPIO.output(ledX, GPIO.input(button0)) # blink when button0
+	while True:
+		for ledX in leds:
+			# blink only when button0 is pressed
+			GPIO.output(ledX, GPIO.input(button0))
 
-
+# Exit on ctrl+c
 except KeyboardInterrupt:
-    GPIO.cleanup()
+		GPIO.cleanup()
