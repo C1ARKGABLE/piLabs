@@ -30,29 +30,26 @@ print("Hello {0}, it's nice to see you.".format(variable))
 
 # Advanced printing!
 # Define a list of fruits
-fruits = ["Apples","Bananas","Oranges","Peaches","Raspberries"]
+fruits = ["Apples", "Bananas", "Oranges", "Peaches", "Raspberries"]
 
 # Print out the preliminary statement without a line break
 print("I like ", end="")
 
 # For each fruit in fruits, where fruit = fruits[i]
 for i, fruit in enumerate(fruits):
-  # Print which the fruit
-  print(fruit, end="")
-  # If we're not at second to last element
-  if i < len(fruits) - 2:
-    # Print a comma
-    print(", ", end="")
-  # If we're at the second to last element
-  elif i == len(fruits) - 2:
-    # Print "and" with an oxford comma
-    print(", and ", end="")
-  # Else (we're probably at the end of the list)
-  else:
-    # Print a period with a line break
-    print(".")
+    # Print which the fruit
+    print(fruit, end="")
+    # If we're not at second to last element
+    if i < len(fruits) - 2:
+        # Print a comma
+        print(", ", end="")
+    # If we're at the second to last element
+    elif i == len(fruits) - 2:
+        # Print "and" with an oxford comma
+        print(", and ", end="")
+    # Else (we're probably at the end of the list)
+    else:
+        # Print a period with a line break
+        print(".")
 
-    # aka 'print(".", end="\n")''
-
-
-
+        # aka 'print(".", end="\n")''
