@@ -41,7 +41,7 @@ def loop():
 
         # Wait for PIR to change state
         # (Detecting motion or not detecting motion)
-        GPIO.wait_for_edge(pir0, GPIO.BOTH)
+        GPIO.wait_for_edge(pir0, GPIO.BOTH,timeout=500)
 
         # if edge, and motion has been detected before, then edge is falling,
         # (aka no more motion)
@@ -59,6 +59,8 @@ def loop():
             GPIO.output(led0, GPIO.LOW)
             # set on to True
             on = True
+
+        print("Lights are on") if on else print("Lights are off")
 
 
 def destroy():
