@@ -30,7 +30,7 @@ def setup():
     GPIO.output(led1, GPIO.LOW)
 
     # setup the input with debounce to decrease sensitivity
-    GPIO.setup(pir0, GPIO.IN, pull_up_down=GPIO.PUD_DOWN, bouncetime=200)
+    GPIO.setup(pir0, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 
 def loop():
@@ -41,7 +41,7 @@ def loop():
 
         # Wait for PIR to change state
         # (Detecting motion or not detecting motion)
-        GPIO.wait_for_edge(pir0, GPIO.BOTH)
+        GPIO.wait_for_edge(pir0, GPIO.BOTH, bounce_time=200)
 
         # if edge, and motion has been detected before, then edge is falling,
         # (aka no more motion)
