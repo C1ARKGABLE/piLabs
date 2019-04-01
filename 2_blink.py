@@ -1,15 +1,12 @@
-# import GPIO library & time
 import RPi.GPIO as GPIO
 import time
 
-# Pin numbers
 led0 = 7
 led1 = 11
 led2 = 13
 
 
 # Create a list of leds
-leds = [led0, led1, led2]
 
 # Set GPIO numbering mode and define input pin
 GPIO.setmode(GPIO.BOARD)
